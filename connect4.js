@@ -15,8 +15,12 @@
 // (board[5][0] would be the bottom-left spot on the board)
 
 class Game {
+
+  // TODO: can put optional default parameters here
   constructor(height, width) {
-  //constructor(height, width, board, currPlayer) {
+
+    // TODO: don't have this
+    //constructor(height, width, board, currPlayer) {
     this.height = height;
     this.width = width;
     this.board = [];
@@ -30,8 +34,10 @@ class Game {
    */
 
   makeBoard() {
+    // TODO: create board here and populate it here instead of this.board = []
+    //        in constructor.
     for (let y = 0; y < this.height; y++) {
-      const emptyRow = Array.from({length: this.width}).fill(null);
+      const emptyRow = Array.from({ length: this.width }).fill(null);
       this.board.push(emptyRow);
     }
   }
@@ -39,6 +45,8 @@ class Game {
   /** makeHtmlBoard: make HTML table and row of column tops. */
 
   makeHtmlBoard() {
+    // TODO: can make table element's inner HTML to be an empty string instead
+    //        of deleting through for loop
     const htmlBoard = document.getElementById("board");
 
     // this actually doesn't delete tiles, commenting it out still gives
@@ -106,26 +114,30 @@ class Game {
     alert(msg);
   }
 
-/** Takes an array of arrays from checkForWin; returns boolean
- *  // Check four cells to see if they're all color of current player
-    //  - cells: list of four (y, x) cells
-    //  - returns true if all are legal coordinates & all match currPlayer
-*/
 
-    _win(cells) {
-      return cells.every(
-          ([y, x]) =>
-              y >= 0 &&
-              y < this.height &&
-              x >= 0 &&
-              x < this.width &&
-              this.board[y][x] === this.currPlayer
-      );
-    }
 
   /** checkForWin: check board cell-by-cell for "does a win start here?" */
 
   checkForWin() {
+
+    /** Takes an array of arrays from checkForWin; returns boolean
+ *  // Check four cells to see if they're all color of current player
+    //  - cells: list of four (y, x) cells
+    //  - returns true if all are legal coordinates & all match currPlayer
+*/
+    // TODO: find way to use call or bind to make this work
+    // TODO: perhaps bind _win to a variable
+    function _win(cells) {
+      return cells.every(
+        ([y, x]) => {
+          y >= 0 &&
+          y < this.height &&
+          x >= 0 &&
+          x < this.width &&
+          this.board[y][x] === this.currPlayer
+        });
+      }
+
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
         // get "check list" of 4 cells (starting here) for each of the different
@@ -136,8 +148,8 @@ class Game {
         const diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
 
         // find winner (only checking each win-possibility as needed)
-        if (this._win(horiz) || this._win(vert) || this._win(diagDR) ||
-            this._win(diagDL)) {
+        if (_win(horiz) || _win(vert) || _win(diagDR) ||
+          _win(diagDL)) {
           return true;
         }
       }
@@ -186,12 +198,17 @@ class Game {
   /** Start game. */
 
   start() {
-    this.makeBoard();
-    this.makeHtmlBoard();
+    this.makeBoard(); // TODO: can have this in contructor
+    this.makeHtmlBoard(); // TODO: can have this in constructor
   }
+
+  // startTheGame() {
+  //   const button =
+  // }
 
 }
 
 //start();
 
+// turn this to event listener once button to start game is clicked
 new Game(6, 7);
