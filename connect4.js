@@ -127,16 +127,19 @@ class Game {
 */
     // TODO: find way to use call or bind to make this work
     // TODO: perhaps bind _win to a variable
-    function _win(cells) {
-      return cells.every(
-        ([y, x]) => {
+
+    //function _win(cells) { // Make it an arrow function PER THE SOLN FROM RS.
+    const _win = cells =>
+      cells.every(
+        ([y, x]) =>
           y >= 0 &&
           y < this.height &&
           x >= 0 &&
           x < this.width &&
           this.board[y][x] === this.currPlayer
-        });
-      }
+        );
+
+    const innerWin = _win.bind(this); // Matt's attempt at context correction.
 
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
@@ -148,8 +151,9 @@ class Game {
         const diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
 
         // find winner (only checking each win-possibility as needed)
-        if (_win(horiz) || _win(vert) || _win(diagDR) ||
-          _win(diagDL)) {
+        //if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
+        if (_win(horiz) || _win(vert) ||
+            _win(diagDR) || _win(diagDL)) {
           return true;
         }
       }
