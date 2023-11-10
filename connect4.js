@@ -20,7 +20,8 @@ class Game {
     this.height = height;
     this.width = width;
     this.board = [];
-    this.makeBoard();
+    this.currPlayer = 1;
+    this.start();
     //this.currPlayer = currPlayer;
   }
 
@@ -40,6 +41,13 @@ class Game {
   makeHtmlBoard() {
     const htmlBoard = document.getElementById("board");
 
+    // this actually doesn't delete tiles, commenting it out still gives
+    // a single board.
+    const oldTiles = document.querySelectorAll('tr');
+    for (let i = 0; i < oldTiles.length; i++) {
+      oldTiles[i].remove();
+    }
+
     // TODO: add comment for this code
     const top = document.createElement("tr");
     top.setAttribute("id", "column-top");
@@ -47,7 +55,7 @@ class Game {
     for (let x = 0; x < this.width; x++) {
       const headCell = document.createElement("td");
       headCell.setAttribute("id", `top-${x}`);
-      headCell.addEventListener("click", handleClick);
+      headCell.addEventListener("click", this.handleClick.bind(this));
       top.append(headCell);
     }
     htmlBoard.append(top);
@@ -85,7 +93,7 @@ class Game {
   placeInTable(y, x) {
     const piece = document.createElement('div');
     piece.classList.add('piece');
-    piece.classList.add(`p${currPlayer}`);
+    piece.classList.add(`p${this.currPlayer}`);
 
     const spot = document.getElementById(`c-${y}-${x}`);
     spot.append(piece);
@@ -109,9 +117,9 @@ class Game {
       return cells.every(
           ([y, x]) =>
               y >= 0 &&
-              y < this.height &&
+              y < this.height.bind(this) &&
               x >= 0 &&
-              x < this.width &&
+              x < this.width.bind(this) &&
               this.board[y][x] === currPlayer
       );
     }
@@ -161,14 +169,14 @@ class Game {
     }
 
     // switch players
-    currPlayer = currPlayer === 1 ? 2 : 1;
+    this.currPlayer = this.currPlayer === 1 ? 2 : 1;
   }
 
   /** Start game. */
 
   start() {
-    makeBoard();
-    makeHtmlBoard();
+    this.makeBoard();
+    this.makeHtmlBoard();
   }
 
 }
