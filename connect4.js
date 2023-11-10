@@ -107,23 +107,23 @@ class Game {
 
   /** checkForWin: check board cell-by-cell for "does a win start here?" */
 
-  checkForWin() {
-
-    function _win(cells) {
+    _win(cells) {
       // Check four cells to see if they're all color of current player
       //  - cells: list of four (y, x) cells
       //  - returns true if all are legal coordinates & all match currPlayer
 
+
       return cells.every(
           ([y, x]) =>
               y >= 0 &&
-              y < this.height.bind(this) &&
+              y < this.height &&
               x >= 0 &&
-              x < this.width.bind(this) &&
-              this.board[y][x] === currPlayer
+              x < this.width &&
+              this.board[y][x] === this.currPlayer
       );
     }
 
+  checkForWin() {
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
         // get "check list" of 4 cells (starting here) for each of the different
@@ -134,12 +134,13 @@ class Game {
         const diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
 
         // find winner (only checking each win-possibility as needed)
-        if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
+        if (this._win(horiz) || this._win(vert) || this._win(diagDR) ||
+            this._win(diagDL)) {
           return true;
         }
       }
     }
-    return false;
+    return undefined;
   }
 
   /** handleClick: handle click of column top to play piece */
