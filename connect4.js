@@ -106,14 +106,13 @@ class Game {
     alert(msg);
   }
 
-  /** checkForWin: check board cell-by-cell for "does a win start here?" */
+/** Takes an array of arrays from checkForWin; returns boolean
+ *  // Check four cells to see if they're all color of current player
+    //  - cells: list of four (y, x) cells
+    //  - returns true if all are legal coordinates & all match currPlayer
+*/
 
     _win(cells) {
-      // Check four cells to see if they're all color of current player
-      //  - cells: list of four (y, x) cells
-      //  - returns true if all are legal coordinates & all match currPlayer
-
-
       return cells.every(
           ([y, x]) =>
               y >= 0 &&
@@ -123,6 +122,8 @@ class Game {
               this.board[y][x] === this.currPlayer
       );
     }
+
+  /** checkForWin: check board cell-by-cell for "does a win start here?" */
 
   checkForWin() {
     for (let y = 0; y < this.height; y++) {
