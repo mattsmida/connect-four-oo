@@ -48,7 +48,8 @@ class Game {
       oldTiles[i].remove();
     }
 
-    // TODO: add comment for this code
+    // add comment for this code
+    // This sets the top row for the game for colors to be dropped in.
     const top = document.createElement("tr");
     top.setAttribute("id", "column-top");
 
@@ -147,30 +148,38 @@ class Game {
 
   handleClick(evt) {
     // get x from ID of clicked cell
-    const x = Number(evt.target.id.slice("top-".length));
+    // console.log(evt.target.id.slice(4));
+    // const x = 3;
+    console.log(evt.target.innerHTML);
+    const x = Number(evt.target.id.toString().slice(4));
+    console.log('x passed here!', x);
+
+    // const x = Number(evt.target.id.slice(evt.target.id.length-1));
 
     // get next spot in column (if none, ignore click)
-    const y = findSpotForCol(x);
+    const y = this.findSpotForCol(x);
     if (y === null) {
       return;
     }
 
     // place piece in board and add to HTML table
-    this.board[y][x] = currPlayer;
-    placeInTable(y, x);
+    this.board[y][x] = this.currPlayer;
+    this.placeInTable(y, x);
 
     // check for win
-    if (checkForWin()) {
-      return endGame(`Player ${currPlayer} won!`);
+    if (this.checkForWin()) {
+      return this.endGame(`Player ${this.currPlayer} won!`);
     }
 
     // check for tie: if top row is filled, board is filled
     if (this.board[0].every(cell => cell !== null)) {
-      return endGame('Tie!');
+      return this.endGame('Tie!');
     }
 
     // switch players
+    console.log('This is currentPlayer', this.currPlayer);
     this.currPlayer = this.currPlayer === 1 ? 2 : 1;
+    console.log('This is after the swap', this.currPlayer);
   }
 
   /** Start game. */
